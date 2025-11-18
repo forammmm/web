@@ -1,0 +1,79 @@
+<style>
+  body.theme-active {
+    background: linear-gradient(120deg, #3a5f9e, #5c7db8, #aac0e0);
+    background-size: 200% 200%;
+    animation: sadMove 9s ease-in-out infinite;
+  }
+
+  @keyframes sadMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .raindrop {
+    position: fixed;
+    top: -5%;
+    width: 4px;
+    height: 16px;
+    opacity: 0.6;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.4);
+    transform: rotate(5deg);
+    animation: raindropFall 3s linear forwards;
+  }
+
+  @keyframes raindropFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+    100% { transform: translateY(120vh) rotate(180deg); opacity: 0; }
+  }
+
+  .glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(12px);
+    opacity: 0.5;
+    background: radial-gradient(circle, rgba(255,255,255,0.6), rgba(255,255,255,0.05));
+  }
+</style>
+
+<div id="theme-animation-container"></div>
+
+<script>
+  function startTheme() {
+    document.body.classList.add('theme-active');
+    window.__themeIntervals = window.__themeIntervals || [];
+
+    function createRaindrop() {
+      const el = document.createElement('div');
+      el.className = 'raindrop';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.height = (12 + Math.random() * 10) + 'px';
+      el.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3500);
+    }
+
+    function createGlow() {
+      const el = document.createElement('div');
+      el.className = 'glow';
+      const size = Math.random() * 100 + 60;
+      el.style.width = el.style.height = size + 'px';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = Math.random() * 100 + 'vh';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 7000);
+    }
+
+    window.__themeIntervals.push(setInterval(createRaindrop, 200));
+    window.__themeIntervals.push(setInterval(createGlow, 1200));
+  }
+
+  function stopTheme() {
+    if (window.__themeIntervals) {
+      window.__themeIntervals.forEach(i => clearInterval(i));
+      window.__themeIntervals = [];
+    }
+    document.body.classList.remove('theme-active');
+  }
+</script>

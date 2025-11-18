@@ -1,0 +1,70 @@
+<style>
+  body.theme-active {
+    background: linear-gradient(120deg, #e0a370, #99e0ea, #fed7aa);
+    background-size: 200% 200%;
+    animation: joyMove 9s ease-in-out infinite;
+  }
+
+  @keyframes joyMove {
+    0% {
+      background-position: 0% 50%
+    }
+
+    50% {
+      background-position: 100% 50%
+    }
+
+    100% {
+      background-position: 0% 50%
+    }
+  }
+
+  .confetti {
+    position: fixed;
+    bottom: 100%;
+    width: 8px;
+    height: 12px;
+    opacity: 0.95;
+    border-radius: 2px;
+    transform: rotate(10deg);
+    animation: confettiFall 4s linear forwards
+  }
+
+  @keyframes confettiFall {
+    0% {
+      transform: translateY(0) rotate(0)
+    }
+
+    100% {
+      transform: translateY(120vh) rotate(600deg);
+      opacity: 0
+    }
+  }
+
+  .glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(10px);
+    opacity: .7;
+  }
+</style>
+
+
+<div id="theme-animation-container"></div>
+
+
+<script>
+  function startTheme() {
+    document.body.classList.add('theme-active');
+    window.__themeIntervals = window.__themeIntervals || [];
+
+
+    function createConfetti() { const el = document.createElement('div'); el.className = 'confetti'; el.style.left = Math.random() * 100 + 'vw'; el.style.background = ['#ff7b7b', '#ffd166', '#9ad3bc', '#ffd5e5'][Math.floor(Math.random() * 4)]; el.style.animationDuration = (3 + Math.random() * 2) + 's'; document.body.appendChild(el); setTimeout(() => el.remove(), 4500); }
+    function createGlow() { const el = document.createElement('div'); el.className = 'glow'; const size = Math.random() * 120 + 80; el.style.width = el.style.height = size + 'px'; el.style.left = Math.random() * 100 + 'vw'; el.style.top = Math.random() * 100 + 'vh'; el.style.background = 'radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0.05))'; el.style.opacity = 0.6; document.body.appendChild(el); setTimeout(() => el.remove(), 7000); }
+
+
+    window.__themeIntervals.push(setInterval(createConfetti, 250));
+    window.__themeIntervals.push(setInterval(createGlow, 1200));
+  }
+  function stopTheme() { if (window.__themeIntervals) { window.__themeIntervals.forEach(i => clearInterval(i)); window.__themeIntervals = []; } document.body.classList.remove('theme-active'); }
+</script>
